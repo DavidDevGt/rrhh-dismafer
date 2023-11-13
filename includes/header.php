@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ERP | Ferretería Shama</title>
+    <title>RRHH - Dismafer</title>
 
     <!-- Icono web -->
     <link rel="icon" href="assets\img\dismafer-logo.png" type="image/x-icon">
@@ -23,9 +23,12 @@
 </head>
 
 <!-- Navbar -->
-<nav id="miNavbar" class="navbar navbar-expand-lg navbar-light bg-light">
+<nav id="miNavbar" class="navbar navbar-expand-lg">
     <a id="logoNavbar" class="navbar-brand" href="https://daviddevgt.web.app">
-        <img src="assets\img\dismafer-logo.png" width="80" height="80" alt="Logo Dismafer">
+        <img src="assets/img/dismafer-logo.png" width="80" height="80" alt="Logo Dismafer">
     </a>
+    <div class="navbar-text ml-auto d-none d-lg-block" id="navbar-text">
+        RRHH DISMAFER
+    </div>
 </nav>
 <!-- Fin Navbar -->

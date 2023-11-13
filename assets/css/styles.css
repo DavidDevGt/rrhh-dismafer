@@ -52,3 +52,18 @@ body {
     border-color: #007aff;
     box-shadow: 0 0 5px rgba(81, 167, 232, 0.5);
 }
+
+#miNavbar {
+    background-color: #679fce;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#logoNavbar {
+    padding-left: 20px;
+}
+
+#navbar-text {
+    color: white;
+    font-size: 1.25rem;
+    font-weight: bold;
+}
