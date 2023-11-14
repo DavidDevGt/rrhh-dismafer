@@ -14,7 +14,7 @@ require_once __DIR__ . '/../../includes/header.php';
             <div class="card">
                 <div class="card-body">
                     <h5 class="text-center mb-3 font-weight-bold">Iniciar sesión</h5>
-                    <form id="formularioLogin" action="backend/procesar_login.php" method="POST">
+                    <form id="formularioLogin" method="POST">
                         <div class="form-group">
                             <input type="text" name="usuario" class="form-control mb-3" placeholder="Usuario" required>
                         </div>
@@ -52,6 +52,26 @@ require_once __DIR__ . '/../../includes/header.php';
                 passwordField.attr('type', 'password');
                 $(this).removeClass('bi-eye').addClass('bi-eye-slash');
             }
+        });
+
+        // Evento submit del formulario
+        $('#formularioLogin').submit(function(e) {
+            e.preventDefault();
+            $.ajax({
+                url: '/rrhh-dismafer/login/process',
+                type: 'post',
+                data: $(this).serialize(),
+                success: function(response) {
+                    if (response.success) {
+                        window.location.href = '/rrhh-dismafer/';
+                    } else {
+                        Swal.fire('Error', 'Usuario o contraseña incorrectos', 'error');
+                    }
+                },
+                error: function() {
+                    Swal.fire('Error', 'Hubo un problema al procesar su solicitud', 'error');
+                }
+            });
         });
     });
 </script>

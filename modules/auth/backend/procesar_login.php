@@ -2,26 +2,21 @@
 require_once __DIR__ . '/../../../config/database.php';
 require_once __DIR__ . '/../../../routes/session.php';
 
+header('Content-Type: application/json');
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Obtener usuario y contraseña del formulario
     $usuario = obtenerPost('usuario');
     $contraseña = obtenerPost('contraseña');
 
-    // Verificar las credenciales del usuario
     $id_usuario = verificarUsuario($usuario, $contraseña);
 
     if ($id_usuario) {
-        // Iniciar sesión y redirigir a la página de inicio
         iniciarSesion($id_usuario);
-        header('Location: /rrhh-dismafer/'); // Ajusta según la ruta de inicio
-        exit;
+        echo json_encode(['success' => true]);
     } else {
-        // Redirigir de nuevo al login con un mensaje de error
-        header('Location: /rrhh-dismafer/login?error=1');
-        exit;
+        echo json_encode(['success' => false]);
     }
+} else {
+    echo json_encode(['success' => false]);
 }
-
-// Redirigir a login si no es una petición POST
-header('Location: ../index.php?url=auth/login');
 exit;

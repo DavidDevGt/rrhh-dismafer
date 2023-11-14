@@ -14,7 +14,7 @@ require_once __DIR__ . '/../../includes/header.php';
             <div class="card">
                 <div class="card-body">
                     <h5 class="text-center mb-3 font-weight-bold">Registro</h5>
-                    <form id="formularioRegistro" action="backend/procesar_registro.php" method="POST">
+                    <form id="formularioRegistro" method="POST">
                         <div class="form-group">
                             <input type="text" name="usuario" class="form-control mb-3" placeholder="Usuario" required>
                         </div>
@@ -65,6 +65,8 @@ require_once __DIR__ . '/../../includes/header.php';
 
         // Validación de contraseña en el frontend
         $('#formularioRegistro').submit(function(e) {
+            e.preventDefault();
+
             var password = $('#password').val();
             var confirmPassword = $('#confirmPassword').val();
 
@@ -91,6 +93,23 @@ require_once __DIR__ . '/../../includes/header.php';
                 });
                 return false;
             }
+
+            $.ajax({
+                url: '/rrhh-dismafer/register/process',
+                type: 'post',
+                data: $(this).serialize(),
+                success: function(response) {
+                    if (response.success) {
+                        Swal.fire('Éxito', 'Registro completado. Redireccionando...', 'success')
+                            .then(() => window.location.href = '/rrhh-dismafer/login');
+                    } else {
+                        Swal.fire('Error', response.error, 'error');
+                    }
+                },
+                error: function() {
+                    Swal.fire('Error', 'Hubo un problema al procesar su solicitud', 'error');
+                }
+            });
         });
     });
 </script>
