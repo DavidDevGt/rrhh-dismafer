@@ -13,11 +13,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($id_usuario) {
         // Iniciar sesión y redirigir a la página de inicio
         iniciarSesion($id_usuario);
-        header('Location: ../index.php');
+        header('Location: /rrhh-dismafer/'); // Ajusta según la ruta de inicio
         exit;
     } else {
         // Redirigir de nuevo al login con un mensaje de error
-        header('Location: ../index.php?url=auth/login&error=1');
+        header('Location: /rrhh-dismafer/login?error=1');
         exit;
     }
 }
