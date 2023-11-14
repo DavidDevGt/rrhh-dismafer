@@ -5,51 +5,43 @@ require_once __DIR__ . '/session.php';
 
 $router = new AltoRouter();
 
-// Configurar la base del path si tu proyecto está en un subdirectorio
-$router->setBasePath('/rrhh-dismafer'); // Ajusta este path según tu estructura
+// Configurar la base del path
+$router->setBasePath('/rrhh-dismafer');
 
-// Definir rutas
+// Rutas públicas (no requieren autenticación)
 $router->map('GET', '/', function() {
     require __DIR__ . '/../modules/home/index.php';
 });
-
-$router->map('GET', '/empleados', function() {
-    require __DIR__ . '/../modules/empleados/index.php';
-});
-
-$router->map('GET', '/adelantos', function() {
-    require __DIR__ . '/../modules/adelantos/index.php';
-});
-
-$router->map('GET', '/ausencias', function() {
-    require __DIR__ . '/../modules/ausencias/index.php';
-});
-
-$router->map('GET', '/pagos', function() {
-    require __DIR__ . '/../modules/pagos/index.php';
-});
-
-$router->map('GET', '/usuarios', function() {
-    require __DIR__ . '/../modules/usuarios/index.php';
-});
-
-$router->map('GET', '/vacaciones', function() {
-    require __DIR__ . '/../modules/vacaciones/index.php';
-});
-
 $router->map('GET', '/login', function() {
     require __DIR__ . '/../modules/auth/login.php';
 });
-
 $router->map('GET', '/register', function() {
     require __DIR__ . '/../modules/auth/register.php';
 });
+$router->map('POST', '/login', function() {
+    require __DIR__ . '/../modules/auth/backend/procesar_login.php';
+});
 
-// $router->map('POST', '/auth/login', function() {
-//     require __DIR__ . '/../modules/auth/backend/procesar_login.php';
-// });
+// Rutas privadas (requieren autenticación)
+$rutasPrivadas = [
+    ['/empleados', '/../modules/empleados/index.php'],
+    ['/adelantos', '/../modules/adelantos/index.php'],
+    ['/ausencias', '/../modules/ausencias/index.php'],
+    ['/pagos', '/../modules/pagos/index.php'],
+    ['/vacaciones', '/../modules/vacaciones/index.php'],
+    ['/usuarios', '/../modules/usuarios/index.php']
+];
 
-// Aquí puedes seguir agregando rutas según necesites
+foreach ($rutasPrivadas as $ruta) {
+    $router->map('GET', $ruta[0], function() use ($ruta) {
+        if (verificarSesion()) {
+            require __DIR__ . $ruta[1];
+        } else {
+            header('Location: /rrhh-dismafer/login');
+            exit;
+        }
+    });
+}
 
 // Procesar la ruta solicitada
 $match = $router->match();
