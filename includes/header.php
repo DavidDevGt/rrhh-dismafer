@@ -25,10 +25,7 @@
 <!-- Navbar -->
 <nav id="miNavbar" class="navbar navbar-expand-lg">
     <a id="logoNavbar" class="navbar-brand" href="https://daviddevgt.web.app">
-        <img src="assets/img/dismafer-logo.png" width="80" height="80" alt="Logo Dismafer">
+        <img src="assets/img/dismafer-logo.png" width="50" height="50" alt="Logo Dismafer">
     </a>
-    <div class="navbar-text ml-auto d-none d-lg-block" id="navbar-text">
-        RRHH DISMAFER
-    </div>
 </nav>
 <!-- Fin Navbar -->
