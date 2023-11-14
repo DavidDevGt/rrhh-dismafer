@@ -6,7 +6,9 @@ require_once __DIR__ . '/../../includes/header.php';
 </style>
 
 <div class="container mt-5">
+    <h1>dashboard</h1>
 </div>
+
 
 <script>
 </script>

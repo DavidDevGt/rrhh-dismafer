@@ -63,7 +63,7 @@ require_once __DIR__ . '/../../includes/header.php';
                 data: $(this).serialize(),
                 success: function(response) {
                     if (response.success) {
-                        window.location.href = '/rrhh-dismafer/';
+                        window.location.href = '/rrhh-dismafer/dashboard';
                     } else {
                         Swal.fire('Error', 'Usuario o contraseña incorrectos', 'error');
                     }

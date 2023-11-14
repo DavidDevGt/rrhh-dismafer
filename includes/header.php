@@ -24,7 +24,7 @@
 
 <!-- Navbar -->
 <nav id="miNavbar" class="navbar navbar-expand-lg">
-    <a id="logoNavbar" class="navbar-brand" href="https://daviddevgt.web.app">
+    <a id="logoNavbar" class="navbar-brand" href="#">
         <img src="assets/img/dismafer-logo.png" width="50" height="50" alt="Logo Dismafer">
     </a>
 </nav>
