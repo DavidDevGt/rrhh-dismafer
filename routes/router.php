@@ -18,8 +18,11 @@ $router->map('GET', '/login', function() {
 $router->map('GET', '/register', function() {
     require __DIR__ . '/../modules/auth/register.php';
 });
-$router->map('POST', '/login', function() {
+$router->map('POST', '/login/process', function() {
     require __DIR__ . '/../modules/auth/backend/procesar_login.php';
+});
+$router->map('POST', '/register/process', function() {
+    require __DIR__ . '/../modules/auth/backend/procesar_registro.php';
 });
 
 // Rutas privadas (requieren autenticación)
