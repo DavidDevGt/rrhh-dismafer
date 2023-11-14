@@ -112,3 +112,27 @@ CREATE TABLE usuarios_sistema (
     creado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
     actualizado_en DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     );
+
+-- Índices para la tabla empleados
+ALTER TABLE empleados ADD INDEX idx_nombre_apellido (nombres, apellidos);
+ALTER TABLE empleados ADD INDEX idx_dpi (dpi);
+ALTER TABLE empleados ADD INDEX idx_fecha_nacimiento (fecha_nacimiento);
+
+-- Índices para la tabla horarios
+ALTER TABLE horarios ADD INDEX idx_horario_empleado (id_empleado);
+ALTER TABLE horarios ADD INDEX idx_fecha_horario (fecha);
+
+-- Índices para la tabla ausencias
+ALTER TABLE ausencias ADD INDEX idx_ausencia_empleado_tipo (id_empleado, tipo);
+ALTER TABLE ausencias ADD INDEX idx_fecha_ausencia (fecha_inicio, fecha_fin);
+
+-- Índices para la tabla vacaciones
+ALTER TABLE vacaciones ADD INDEX idx_vacacion_empleado (id_empleado);
+ALTER TABLE vacaciones ADD INDEX idx_fecha_vacacion (fecha_inicio, fecha_fin);
+
+-- Índices para la tabla llamadas_atencion
+ALTER TABLE llamadas_atencion ADD INDEX idx_llamada_empleado_fecha (id_empleado, fecha);
+
+-- Índices para la tabla pagos
+ALTER TABLE pagos ADD INDEX idx_pago_empleado (id_empleado);
+ALTER TABLE pagos ADD INDEX idx_fecha_pago (fecha_pago);
