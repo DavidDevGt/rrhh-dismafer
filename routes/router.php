@@ -33,7 +33,10 @@ $rutasPrivadas = [
     ['/pagos', '/../modules/pagos/index.php'],
     ['/vacaciones', '/../modules/vacaciones/index.php'],
     ['/usuarios', '/../modules/usuarios/index.php'],
-    ['/dashboard', '/../modules/menu-ui/index.php']
+    ['/postulaciones', '/../modules/postulaciones/index.php'],
+    ['/vacantes', '/../modules/vacantes/index.php'],
+    ['/candidatos', '/../modules/candidatos/index.php'],
+    ['/dashboard', '/../modules/dashboard/index.php']
 ];
 
 foreach ($rutasPrivadas as $ruta) {
