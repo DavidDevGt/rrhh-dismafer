@@ -203,11 +203,35 @@ ALTER TABLE pagos ADD INDEX idx_pago_empleado (id_empleado);
 
 ALTER TABLE pagos ADD INDEX idx_fecha_pago (fecha_pago);
 
--- Índice para la tabla Candidatos
+-- Índice para la tabla candidatos
 ALTER TABLE candidatos ADD INDEX idx_nombre_apellido_candidato (nombres, apellidos);
 
--- Índice para la tabla Vacantes
+-- Índice para la tabla vacantes
 ALTER TABLE vacantes ADD INDEX idx_titulo_vacante (titulo);
 
--- Índice para la tabla Postulaciones
+-- Índice para la tabla postulaciones
 ALTER TABLE postulaciones ADD INDEX idx_postulacion_candidato_vacante (id_candidato, id_vacante);
+
+# Este SQL es posterior a la creacion de la base de datos inicial, me falto normalizar esto:
+
+-- Creación de la Tabla de Puestos
+CREATE TABLE puestos (
+    id_puesto INT AUTO_INCREMENT PRIMARY KEY,
+    titulo VARCHAR(100) NOT NULL,
+    descripcion TEXT,
+    departamento VARCHAR(50),
+    activo TINYINT DEFAULT 1 NOT NULL,
+    creado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
+    actualizado_en DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- Modificación de la Tabla de Empleados para incluir el puesto
+ALTER TABLE empleados ADD COLUMN id_puesto INT,
+    ADD FOREIGN KEY (id_puesto) REFERENCES puestos (id_puesto);
+
+-- Modificación de la Tabla de Candidatos para incluir el puesto aplicado
+ALTER TABLE candidatos ADD COLUMN id_puesto_aplicado INT,
+    ADD FOREIGN KEY (id_puesto_aplicado) REFERENCES puestos (id_puesto);
+
+-- Índices para la tabla Puestos
+ALTER TABLE puestos ADD INDEX idx_titulo_puesto (titulo);
