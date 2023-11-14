@@ -28,11 +28,9 @@ require_once __DIR__ . '/../../includes/header.php';
                                 </div>
                             </div>
                         </div>
+
                         <div class="text-center">
-                            <a href="index.php?page=register">¿No tienes una cuenta?</a>
-                        </div>
-                        <div class="text-center">
-                            <button type="submit" class="btn btn-sm btn-primary btn-block mt-3">Entrar</button>
+                            <button type="submit" class="btn btn-primary btn-block mt-3">Entrar</button>
                         </div>
                     </form>
                 </div>

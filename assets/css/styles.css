@@ -54,16 +54,10 @@ body {
 }
 
 #miNavbar {
-    background-color: #679fce;
+    background-color: #40729b;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 #logoNavbar {
     padding-left: 20px;
-}
-
-#navbar-text {
-    color: white;
-    font-size: 1.25rem;
-    font-weight: bold;
 }
