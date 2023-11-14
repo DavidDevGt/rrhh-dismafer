@@ -133,6 +133,46 @@ CREATE TABLE
         FOREIGN KEY (id_usuario) REFERENCES usuarios_sistema (id_usuario)
     );
 
+-- Tabla de Candidatos
+CREATE TABLE
+    candidatos (
+        id_candidato INT AUTO_INCREMENT PRIMARY KEY,
+        nombres VARCHAR(50) NOT NULL,
+        apellidos VARCHAR(50) NOT NULL,
+        email VARCHAR(100) NOT NULL,
+        telefono VARCHAR(15),
+        direccion VARCHAR(100),
+        cv_url VARCHAR(255), -- URL donde se almacena el CV
+        creado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
+        actualizado_en DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    );
+
+-- Tabla de Vacantes
+CREATE TABLE
+    vacantes (
+        id_vacante INT AUTO_INCREMENT PRIMARY KEY,
+        titulo VARCHAR(100) NOT NULL,
+        descripcion TEXT NOT NULL,
+        departamento VARCHAR(50),
+        estado ENUM ('abierta', 'cerrada') DEFAULT 'abierta',
+        creado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
+        actualizado_en DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    );
+
+-- Tabla de Postulaciones
+CREATE TABLE
+    postulaciones (
+        id_postulacion INT AUTO_INCREMENT PRIMARY KEY,
+        id_candidato INT,
+        id_vacante INT,
+        fecha_postulacion DATE,
+        estado ENUM ('pendiente', 'aceptado', 'rechazado') DEFAULT 'pendiente',
+        FOREIGN KEY (id_candidato) REFERENCES candidatos (id_candidato),
+        FOREIGN KEY (id_vacante) REFERENCES vacantes (id_vacante),
+        creado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
+        actualizado_en DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    );
+
 -- Índices para la tabla empleados
 ALTER TABLE empleados ADD INDEX idx_nombre_apellido (nombres, apellidos);
 
@@ -162,3 +202,12 @@ ALTER TABLE llamadas_atencion ADD INDEX idx_llamada_empleado_fecha (id_empleado,
 ALTER TABLE pagos ADD INDEX idx_pago_empleado (id_empleado);
 
 ALTER TABLE pagos ADD INDEX idx_fecha_pago (fecha_pago);
+
+-- Índice para la tabla Candidatos
+ALTER TABLE candidatos ADD INDEX idx_nombre_apellido_candidato (nombres, apellidos);
+
+-- Índice para la tabla Vacantes
+ALTER TABLE vacantes ADD INDEX idx_titulo_vacante (titulo);
+
+-- Índice para la tabla Postulaciones
+ALTER TABLE postulaciones ADD INDEX idx_postulacion_candidato_vacante (id_candidato, id_vacante);
