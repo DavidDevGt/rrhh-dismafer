@@ -1,36 +1,39 @@
 <?php
-// Incluir lógica de manejo de sesiones
-include_once 'session.php';
+require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/session.php';
 
-// Obtener la URL del request
-$url = isset($_GET['url']) ? explode('/', filter_var(rtrim($_GET['url'], '/'), FILTER_SANITIZE_URL)) : [];
+$router = new AltoRouter();
 
-// Módulos accesibles sin autenticación
-$modulosPublicos = ['auth', 'home'];
+// Configurar la base del path si tu proyecto está en un subdirectorio
+$router->setBasePath('/app');
 
-// Obtener el nombre del módulo desde la URL
-$modulo = $url[0] ?? 'home'; // 'home' es la página de inicio por defecto
+// Definir rutas
+$router->map('GET', '/empleados', function() {
+    require __DIR__ . '/../modules/empleados/index.php';
+});
 
-// Verificar si el usuario está intentando acceder a un módulo restringido
-if (!in_array($modulo, $modulosPublicos) && !verificarSesion()) {
-    header('Location: index.php?url=auth/login');
-    exit;
-}
+// $router->map('GET', '/nombre-de-modulo/submodulo', function() {
+//     require __DIR__ . '/../modules/nombre-de-modulo/submodulo.php'; // Ajusta la ruta según sea necesario
+// });
 
-// Ruta del archivo basada en la URL
-if ($modulo == 'auth') {
-    // Manejar autenticación (login/register)
-    $submodulo = $url[1] ?? 'login'; // Por defecto a login
-    $file_path = __DIR__ . "/../modules/auth/{$submodulo}.php";
+$router->map('GET', '/auth/login', function() {
+    require __DIR__ . '/../modules/auth/login.php';
+});
+
+$router->map('POST', '/auth/login', function() {
+    // Aquí podrías incluir la lógica de procesamiento del login o redirigir a otro archivo que lo maneje
+});
+
+// Aquí puedes seguir agregando rutas según necesites
+
+// Procesar la ruta solicitada
+$match = $router->match();
+
+if ($match && is_callable($match['target'])) {
+    call_user_func_array($match['target'], $match['params']);
 } else {
-    // Otros módulos
-    $file_path = __DIR__ . "/../modules/{$modulo}/index.php";
-}
-
-// Verificar si el archivo existe
-if (file_exists($file_path)) {
-    require_once $file_path;
-} else {
-    // Página de error 404
-    require_once __DIR__ . '/../includes/404.php';
+    // No se encontró la ruta
+    header("HTTP/1.0 404 Not Found");
+    require __DIR__ . '/../includes/404.php';
 }
