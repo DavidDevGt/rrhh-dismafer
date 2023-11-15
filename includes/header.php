@@ -23,7 +23,8 @@
     <script src="assets\js\dataTables.min.js"></script>
     <script src="assets\js\moment.js"></script>
 </head>
-
+<body class="bg-light">
+    
 <!-- Navbar -->
 <nav id="miNavbar" class="navbar navbar-expand-lg">
     <a id="logoNavbar" class="navbar-brand" href="#">

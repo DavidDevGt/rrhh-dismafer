@@ -4,6 +4,15 @@
     .bi {
         font-size: 1.25rem;
     }
+    .btn-sm {
+        margin-right: 5px;
+    }
+    #tabla_empleados_filter {
+        margin-bottom: 15px;
+    }
+    #tabla_empleados_length {
+        margin-bottom: 15px;
+    }
 </style>
 
 <div class="container mt-5">
@@ -20,9 +29,9 @@
         </div>
     </div>
 
-    <div class="table-responsive mt-3">
+    <div class="table-responsive mt-4">
         <table class="table table-hover" id="tabla_empleados">
-            <thead class="table-success">
+        <thead class="thead-light">
                 <tr>
                     <th>DPI</th>
                     <th>Nombres</th>
