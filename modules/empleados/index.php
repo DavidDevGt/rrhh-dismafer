@@ -80,7 +80,7 @@
 
 <div class="container mt-4">
     <h2 class="text-center">Gestión de Empleados</h2>
-    <div class="d-flex justify-content-between align-items-center mt-4">
+    <div class="d-flex justify-content-between align-items-center">
         <button id="btnAgregar" class="btn btn-success" data-toggle="modal" data-target="#modalEmpleado">
             Agregar Empleados
         </button>
@@ -102,6 +102,7 @@
                     <th>Puesto</th>
                     <th>Correo</th>
                     <th>Fecha Inicio</th>
+                    <th>Estado</th>
                     <th>Acciones</th>
                 </tr>
             </thead>

@@ -219,7 +219,7 @@ CREATE TABLE puestos (
     id_puesto INT AUTO_INCREMENT PRIMARY KEY,
     titulo VARCHAR(100) NOT NULL,
     descripcion TEXT,
-    departamento VARCHAR(50),
+    departamento VARCHAR(50), -- Agregar lista en frontend para los tipos
     activo TINYINT DEFAULT 1 NOT NULL,
     creado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
     actualizado_en DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP

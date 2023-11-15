@@ -36,6 +36,7 @@ $rutasPrivadas = [
     ['/postulaciones', '/../modules/postulaciones/index.php'],
     ['/vacantes', '/../modules/vacantes/index.php'],
     ['/candidatos', '/../modules/candidatos/index.php'],
+    ['/puestos', '/../modules/puestos/index.php'],
     ['/dashboard', '/../modules/dashboard/index.php']
 ];
 
