@@ -14,11 +14,13 @@
     <link rel="stylesheet" href="assets\css\styles.css">
     <link rel="stylesheet" href="assets\css\animate.min.css">
     <link rel="stylesheet" href="assets\css\bootstrap.min.css">
+    <link rel="stylesheet" href="assets\css\dataTables.min.css">
 
     <!-- Librerias JS -->
     <script src="assets\js\jquery-3.7.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="assets\js\chart.umd.min.js"></script>
     <script src="assets\js\bootstrap.bundle.min.js"></script>
+    <script src="assets\js\dataTables.min.js"></script>
     <script src="assets\js\moment.js"></script>
 </head>
 
