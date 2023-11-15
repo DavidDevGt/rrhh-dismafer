@@ -25,7 +25,7 @@ $router->map('POST', '/register/process', function() {
     require __DIR__ . '/../modules/auth/backend/procesar_registro.php';
 });
 
-// Rutas privadas (requieren autenticación)
+// Rutas de vistas privadas (requieren autenticación)
 $rutasPrivadas = [
     ['/empleados', '/../modules/empleados/index.php'],
     ['/adelantos', '/../modules/adelantos/index.php'],
@@ -45,6 +45,25 @@ foreach ($rutasPrivadas as $ruta) {
             require __DIR__ . $ruta[1];
         } else {
             header('Location: /rrhh-dismafer/login');
+            exit;
+        }
+    });
+}
+
+// Rutas AJAX
+$rutasAjax = [
+    ['/empleados/ajax', '/../modules/empleados/ajax.php'],
+    ['/adelantos/ajax', '/../modules/adelantos/ajax.php'],
+    // ... [Agrega todas las rutas AJAX necesarias aquí]
+];
+
+foreach ($rutasAjax as $rutaAjax) {
+    $router->map('POST', $rutaAjax[0], function() use ($rutaAjax) {
+        if (verificarSesion()) {
+            require __DIR__ . $rutaAjax[1];
+        } else {
+            // Manejar no autenticado o responder con un error
+            echo json_encode(['error' => 'No autorizado']);
             exit;
         }
     });
