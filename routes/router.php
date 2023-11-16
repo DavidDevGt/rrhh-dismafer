@@ -55,6 +55,7 @@ foreach ($rutasPrivadas as $ruta) {
 $rutasAjax = [
     ['/empleados/ajax', '/../modules/empleados/ajax.php'],
     ['/adelantos/ajax', '/../modules/adelantos/ajax.php'],
+    ['/usuarios/ajax', '/../modules/usuarios/ajax.php'],
     // ... [Agrega todas las rutas AJAX necesarias aquí]
 ];
 

@@ -6,6 +6,14 @@ require_once __DIR__ . '/../../includes/header.php';
     .input-group-text {
         cursor: pointer;
     }
+
+    .password-requirements {
+        font-size: 0.7rem;
+        color: rgb(255 95 95);
+        margin-top: 1px;
+        margin-bottom: 10px;
+        margin-left: 3px;
+    }
 </style>
 
 <div class="container mt-5">
@@ -20,17 +28,20 @@ require_once __DIR__ . '/../../includes/header.php';
                         </div>
                         <div class="form-group">
                             <div class="input-group">
-                                <input type="password" name="contraseña" class="form-control mb-3" placeholder="Contraseña" id="password" required>
+                                <input type="password" name="contraseña" class="form-control mb-1" placeholder="Contraseña" id="password" required>
                                 <div class="input-group-append">
                                     <span class="input-group-text">
                                         <i class="bi bi-eye-slash" id="togglePassword"></i>
                                     </span>
                                 </div>
                             </div>
+                            <div class="password-requirements">
+                                La contraseña debe tener al menos 8 caracteres, incluir un número y un carácter especial.
+                            </div>
                         </div>
                         <div class="form-group">
                             <div class="input-group">
-                                <input type="password" name="confirmar_contraseña" class="form-control mb-3" placeholder="Confirmar Contraseña" id="confirmPassword" required>
+                                <input type="password" name="confirmar_contraseña" class="form-control mb-1" placeholder="Confirmar Contraseña" id="confirmPassword" required>
                                 <div class="input-group-append">
                                     <span class="input-group-text">
                                         <i class="bi bi-eye-slash" id="toggleConfirmPassword"></i>
@@ -73,25 +84,23 @@ require_once __DIR__ . '/../../includes/header.php';
             var validPassword = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z]).{8,}$/;
 
             if (!validPassword.test(password)) {
-                e.preventDefault();
                 Swal.fire({
                     title: 'Error',
                     text: 'La contraseña debe tener al menos 8 caracteres, incluir un número y un carácter especial.',
                     icon: 'error',
                     confirmButtonText: 'Aceptar'
                 });
-                return false;
+                return;
             }
 
             if (password !== confirmPassword) {
-                e.preventDefault();
                 Swal.fire({
                     title: 'Error',
                     text: 'Las contraseñas no coinciden.',
                     icon: 'error',
                     confirmButtonText: 'Aceptar'
                 });
-                return false;
+                return;
             }
 
             $.ajax({

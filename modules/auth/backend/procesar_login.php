@@ -5,8 +5,8 @@ require_once __DIR__ . '/../../../routes/session.php';
 header('Content-Type: application/json');
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $usuario = obtenerPost('usuario');
-    $contraseña = obtenerPost('contraseña');
+    $usuario = $_POST['usuario'];
+    $contraseña = $_POST['contraseña'];
 
     $id_usuario = verificarUsuario($usuario, $contraseña);
 

@@ -109,13 +109,3 @@ function dbQueryPreparada($query, $params = [])
     $stmt->execute();
     return $stmt;
 }
-
-function obtenerPost($clave, $tipo = FILTER_SANITIZE_STRING)
-{
-    return filter_input(INPUT_POST, $clave, $tipo);
-}
-
-function obtenerGet($clave, $tipo = FILTER_SANITIZE_STRING)
-{
-    return filter_input(INPUT_GET, $clave, $tipo);
-}

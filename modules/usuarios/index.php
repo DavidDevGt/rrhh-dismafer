@@ -81,7 +81,7 @@
 <div class="container mt-4">
     <h2 class="text-center">Usuarios del Sistema</h2>
     <div class="d-flex justify-content-between align-items-center">
-        <button id="btnAgregar" class="btn btn-success" data-toggle="modal" data-target="#modalUsuario">
+        <button id="btnAgregar" class="btn btn-success" data-toggle="modal" data-target="#modalUsuario" disabled>
             Agregar Usuarios
         </button>
 
@@ -115,27 +115,29 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalUsuarioLabel">Agregar/Editar Usuarios</h5>
+                <h5 class="modal-title" id="modalUsuarioLabel">Editar Usuarios</h5>
                 <button type="button" class="close btn btn-sm btn-danger" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
                 <form id="formularioUsuario">
+                    <input type="hidden" id="id_usuario" name="id_usuario">
+
                     <!-- Campo en una sola columna -->
                     <div class="form-group mt-2">
-                        <label for="titulo">Nombre de Usuario</label>
-                        <input type="text" class="form-control mt-1" id="titulo" name="titulo" required>
+                        <label for="nombre_usuario">Nombre de Usuario</label>
+                        <input type="text" class="form-control mt-1" id="nombre_usuario" name="nombre_usuario" required>
                     </div>
 
                     <div class="form-group mt-2">
-                        <label for="descripcion">Contraseña</label>
-                        <input type="text" class="form-control mt-1" id="descripcion" name="descripcion" required>
+                        <label for="contrasena1">Contraseña</label>
+                        <input type="text" class="form-control mt-1" id="contrasena1" name="contrasena1" required>
                     </div>
 
                     <div class="form-group mt-2">
-                        <label for="departamento">Confirmar Contraseña</label>
-                        <input type="text" class="form-control mt-1" id="departamento" name="departamento" required>
+                        <label for="contrasena2">Confirmar Contraseña</label>
+                        <input type="text" class="form-control mt-1" id="contrasena2" name="contrasena2 " required>
                     </div>
 
                     <div class="form-group mt-3">
@@ -157,55 +159,142 @@
 
 <script>
     $(document).ready(function() {
-        // Inicialización de Datepicker para los campos de fecha
-        $('.datepicker').datepicker({
-            dateFormat: 'yy-mm-dd' // Formato de fecha
-        });
-        // Inicializar DataTable en tu tabla
-        $('#tabla_usuarios').DataTable({
-            // Opciones de DataTables (puedes personalizar estas opciones según tus necesidades)
+        // Inicialización de DataTables
+        var tablaUsuarios = $('#tabla_usuarios').DataTable({
             "language": {
                 "url": "//cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json"
             },
-            // Aquí puedes añadir más opciones como la carga de datos a través de AJAX, etc.
+            "ajax": {
+                "url": "/rrhh-dismafer/usuarios/ajax",
+                "type": "POST",
+                "data": function(d) {
+                    d.accion = 'obtener';
+                }
+            },
+            "columns": [{
+                    "data": "id_usuario"
+                },
+                {
+                    "data": "nombre_usuario"
+                },
+                {
+                    "data": "creado_en"
+                },
+                {
+                    "data": "activo",
+                    render: function(data) {
+                        return data == 1 ? 'Activo' : 'Inactivo';
+                    }
+                },
+                {
+                    "data": null,
+                    "defaultContent": "<button class='btnEditar btn btn-warning btn-sm'>Editar</button><button class='btnEliminar btn btn-danger btn-sm'>Eliminar</button>"
+                }
+            ]
         });
 
-        // Manejo de apertura del modal
+        // Manejo de apertura del modal para agregar usuario
         $('#btnAgregar').click(function() {
             limpiarFormulario();
-            $('#modalUsuario').modal('show'); // Asegúrate de que el ID coincida con el de tu modal
+            $('#modalUsuario').modal('show');
         });
-
-        // Función para limpiar el formulario (útil para reutilizar el modal)
-        function limpiarFormulario() {
-            $('#formularioUsuario')[0].reset();
-            // Puedes agregar más lógica aquí si es necesario
-        }
 
         // Evento para el envío del formulario
         $('#formularioUsuario').submit(function(e) {
             e.preventDefault();
-            var datosFormulario = $(this).serialize(); // Captura los datos del formulario
+            var datosFormulario = $(this).serialize();
 
             $.ajax({
                 url: '/rrhh-dismafer/usuarios/ajax',
                 type: 'POST',
                 data: datosFormulario,
                 success: function(response) {
-                    $('#modalUsuario').modal('hide'); // Cerrar el modal después de la respuesta exitosa
-                    // Otras acciones de éxito...
+                    $('#modalUsuario').modal('hide');
+                    if (response.success) {
+                        Swal.fire({
+                            icon: "success",
+                            title: "¡Hecho!",
+                            text: response.message,
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Error",
+                            text: response.error,
+                        });
+                    }
+                    tablaUsuarios.ajax.reload();
                 },
                 error: function() {
-                    // Manejar error
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: "Ocurrió un error al procesar la solicitud.",
+                    });
                 }
             });
         });
+
+        // Eventos para editar y eliminar usuario
+        $('#tabla_usuarios tbody').on('click', 'button.btnEditar', function() {
+            var data = tablaUsuarios.row($(this).parents('tr')).data();
+            cargarDatosModal(data);
+            $('#modalUsuario').modal('show');
+        });
+
+        $('#tabla_usuarios tbody').on('click', 'button.btnEliminar', function() {
+            var data = tablaUsuarios.row($(this).parents('tr')).data();
+
+            Swal.fire({
+                title: '¿Estás seguro de eliminar el usuario?',
+                text: "Esta acción no se puede deshacer.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Si el usuario hace clic en "Sí, eliminar", realiza la eliminación
+                    $.ajax({
+                        url: '/rrhh-dismafer/usuarios/ajax',
+                        type: 'POST',
+                        data: {
+                            accion: 'eliminar',
+                            id_usuario: data.id_usuario
+                        },
+                        success: function(response) {
+                            tablaUsuarios.ajax.reload();
+                        }
+                    });
+                }
+            });
+        });
+
+
+        // Función para limpiar el formulario
+        function limpiarFormulario() {
+            $('#formularioUsuario')[0].reset();
+            $('#formularioUsuario input[name="id_usuario"]').val('');
+            $('#formularioUsuario input[name="accion"]').val('agregar');
+        }
+
+
+        // Función para cargar datos en el modal para editar
+        function cargarDatosModal(data) {
+            $('#formularioUsuario input[name="accion"]').val('editar');
+            $('#formularioUsuario input[name="id_usuario"]').val(data.id_usuario);
+            $('#formularioUsuario input[name="nombre_usuario"]').val(data.nombre_usuario);
+            // No cargamos la contraseña
+            $('#formularioUsuario input[name="activo"]').prop('checked', data.activo == 1);
+        }
 
         // Cerrar el modal usando el botón de cierre
         $('.close').click(function() {
             $('#modalUsuario').modal('hide');
         });
-    });
+    });;
 </script>
 
 <?php require_once __DIR__ . '/../../includes/footer.php'; ?>
