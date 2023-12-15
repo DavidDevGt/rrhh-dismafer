@@ -199,48 +199,117 @@
     $(document).ready(function() {
         // Inicialización de Datepicker para los campos de fecha
         $('.datepicker').datepicker({
-            dateFormat: 'yy-mm-dd' // Formato de fecha
+            dateFormat: 'yy-mm-dd'
         });
-        // Inicializar DataTable en tu tabla
-        $('#tabla_empleados').DataTable({
-            // Opciones de DataTables (puedes personalizar estas opciones según tus necesidades)
+
+        // Inicializar DataTable
+        var tablaEmpleados = $('#tabla_empleados').DataTable({
+            "ajax": {
+                "url": "/rrhh-dismafer/empleados/ajax",
+                "type": "POST",
+                "data": {
+                    "accion": "obtener"
+                }
+            },
+            "columns": [{
+                    "data": "dpi"
+                },
+                {
+                    "data": "nombres"
+                },
+                {
+                    "data": "apellidos"
+                },
+                {
+                    "data": "puesto"
+                },
+                {
+                    "data": "correo"
+                },
+                {
+                    "data": "fecha_inicio"
+                },
+                {
+                    "data": "activo",
+                    "render": function(data, type, row) {
+                        if (data == 1) {
+                            return '<span class="badge badge-success">Activo</span>';
+                        } else {
+                            return '<span class="badge badge-danger">Inactivo</span>';
+                        }
+                    }
+                },
+                {
+                    "data": "id_empleado",
+                    "render": function(data, type, row) {
+                        return '<button class="btn btn-sm btn-warning btnEditar" data-id="' + data + '"><i class="bi bi-pencil-square"></i></button><button class="btn btn-sm btn-danger btnEliminar" data-id="' + data + '"><i class="bi bi-trash"></i></button>';
+                    }
+                }
+                // ... otras columnas ...
+            ],
             "language": {
                 "url": "//cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json"
-            },
-            // Aquí puedes añadir más opciones como la carga de datos a través de AJAX, etc.
+            }
         });
 
         // Manejo de apertura del modal
         $('#btnAgregar').click(function() {
-            limpiarFormulario();
-            $('#modalEmpleado').modal('show'); // Asegúrate de que el ID coincida con el de tu modal
+            prepararModalParaAgregar();
         });
 
-        // Función para limpiar el formulario (útil para reutilizar el modal)
-        function limpiarFormulario() {
-            $('#formularioEmpleado')[0].reset();
-            // Puedes agregar más lógica aquí si es necesario
+        function prepararModalParaAgregar() {
+            limpiarFormulario();
+            $('#modalEmpleadoLabel').text('Agregar Empleado');
+            $('#formularioEmpleado').attr('data-accion', 'agregar');
+            $('#modalEmpleado').modal('show');
         }
 
-        // Evento para el envío del formulario
+        // Función para limpiar el formulario
+        function limpiarFormulario() {
+            $('#formularioEmpleado')[0].reset();
+        }
+
         $('#formularioEmpleado').submit(function(e) {
             e.preventDefault();
-            var datosFormulario = $(this).serialize(); // Captura los datos del formulario
+            var datosFormulario = $(this).serialize();
+            var accion = $(this).data('accion');
 
             $.ajax({
                 url: '/rrhh-dismafer/empleados/ajax',
                 type: 'POST',
-                data: datosFormulario,
+                data: datosFormulario + "&accion=" + accion,
                 success: function(response) {
-                    $('#modalEmpleado').modal('hide'); // Cerrar el modal después de la respuesta exitosa
-                    // Otras acciones de éxito...
+                    $('#modalEmpleado').modal('hide');
+                    if (response.success) {
+                        tablaEmpleados.ajax.reload();
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Éxito',
+                            text: '¡El formulario se envió correctamente!',
+                            showConfirmButton: false,
+                            timer: 1000 // Duración de 1 segundo
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: '¡Hubo un error al enviar el formulario!',
+                            showConfirmButton: false,
+                            timer: 1000 // Duración de 1 segundo
+                        });
+                    }
                 },
                 error: function() {
-                    // Manejar error
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: '¡Hubo un error en la solicitud!',
+                        showConfirmButton: false,
+                        timer: 1000 // Duración de 1 segundo
+                    });
                 }
             });
         });
-
         // Cerrar el modal usando el botón de cierre
         $('.close').click(function() {
             $('#modalEmpleado').modal('hide');
